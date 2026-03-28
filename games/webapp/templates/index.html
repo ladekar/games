@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pandai Games — Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <h1>Pandai Games</h1>
+        <p class="tag">A collection of brain-training apps and experiments</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="apps-grid">
+        <article class="card">
+          <h3>Brain Tease — Web</h3>
+          <p>Play quick riddles, math puzzles, scrambles, sequences and memory tests in your browser.</p>
+          <div class="card-actions">
+            <a class="btn" href="/brain">Open</a>
+            <a class="btn ghost" href="/static/brain_instructions.txt">Instructions</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Brain Tease — CLI</h3>
+          <p>Run the terminal version for a distraction-free experience.</p>
+          <div class="card-actions">
+            <a class="btn" href="#" onclick="alert('Run: python3 games/brain_tease.py')">Run</a>
+            <a class="btn ghost" href="/games/README.md">Docs</a>
+          </div>
+        </article>
+
+        <article class="card dim">
+          <h3>More Games (coming)</h3>
+          <p>Leaderboards, multiplayer and mini-games planned — stay tuned.</p>
+          <div class="card-actions">
+            <span class="pill">Coming soon</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Snake (Classic)</h3>
+          <p>Play the classic Nokia-style Snake game in the browser.</p>
+          <div class="card-actions">
+            <a class="btn" href="/snake">Play</a>
+            <a class="btn ghost" href="#">Highscores</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="about">
+        <h2>About</h2>
+        <p>This dashboard groups small games and experiments. Click a card to open an app in this site.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">Built with Flask • Open-source • Designed for quick mental workouts</div>
+    </footer>
+  </body>
+</html>

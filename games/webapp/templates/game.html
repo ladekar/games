@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Brain Tease</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <header class="small-header">
+      <div class="wrap">
+        <a href="/" class="back">← Dashboard</a>
+        <h1>Brain Tease</h1>
+      </div>
+    </header>
+
+    <main class="wrap game-wrap">
+      <div class="game-panel">
+        <label>Category:
+          <select id="category">
+            <option value="random">Random</option>
+            <option value="riddle">Riddle</option>
+            <option value="math">Math</option>
+            <option value="scramble">Scramble</option>
+            <option value="sequence">Sequence</option>
+            <option value="memory">Memory</option>
+          </select>
+        </label>
+        <button id="get">Get Question</button>
+
+        <section id="question" style="display:none">
+          <h2 id="prompt"></h2>
+          <div id="memory-timer" style="display:none">Memorize...</div>
+          <input id="answer" placeholder="Type your answer here" />
+          <button id="check">Check</button>
+          <div id="result"></div>
+        </section>
+
+        <section id="scoreboard" style="margin-top:18px">
+          <h3>Submit Score</h3>
+          <input id="player" placeholder="Your name" />
+          <input id="score" placeholder="Score (number)" />
+          <button id="submitScore">Submit</button>
+          <h3>Leaderboard</h3>
+          <ol id="leaderboard"></ol>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      let currentId = null
+      document.getElementById('get').addEventListener('click', async () => {
+        const cat = document.getElementById('category').value
+        const res = await fetch(`/api/question?category=${cat}`)
+        const data = await res.json()
+        currentId = data.id
+        document.getElementById('prompt').textContent = data.prompt
+        document.getElementById('result').textContent = ''
+        document.getElementById('answer').value = ''
+        document.getElementById('question').style.display = 'block'
+        if (data.show_seconds) {
+          document.getElementById('memory-timer').style.display = 'block'
+          setTimeout(() => {
+            document.getElementById('prompt').textContent = 'Now answer:'
+            document.getElementById('memory-timer').style.display = 'none'
+          }, data.show_seconds * 1000)
+        }
+      })
+
+      document.getElementById('check').addEventListener('click', async () => {
+        const answer = document.getElementById('answer').value
+        const res = await fetch('/api/check', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({id: currentId, answer})})
+        const data = await res.json()
+        if (!data.ok) { document.getElementById('result').textContent = data.error; return }
+        document.getElementById('result').textContent = data.result ? 'Correct!' : `Wrong — answer: ${data.answer}`
+      })
+
+      async function loadLeaderboard(){
+        const r = await fetch('/api/leaderboard')
+        const j = await r.json()
+        const ol = document.getElementById('leaderboard')
+        ol.innerHTML = ''
+        if (j.ok) {
+          j.leaderboard.forEach(item => {
+            const li = document.createElement('li')
+            li.textContent = `${item.name} — ${item.score}`
+            ol.appendChild(li)
+          })
+        }
+      }
+
+      document.getElementById('submitScore').addEventListener('click', async () => {
+        const name = document.getElementById('player').value || 'Anonymous'
+        const score = parseInt(document.getElementById('score').value || '0')
+        await fetch('/api/score', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({name, score})})
+        await loadLeaderboard()
+        alert('Score submitted')
+      })
+
+      loadLeaderboard()
+    </script>
+  </body>
+</html>
