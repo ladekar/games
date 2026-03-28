@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      SCORES_FILE: ${{ runner.temp }}/scores.json
     steps:
       - uses: actions/checkout@v4
 
@@ -20,12 +22,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f games/requirements.txt ]; then pip install -r games/requirements.txt; fi
+          if [ -f games/requirements.txt ]; then pip install -r games/requirements.txt pytest gunicorn; fi
 
       - name: Run import smoke tests
         run: |
           python -c "import sys; sys.path.append('games'); import brain_tease; print('brain_tease import OK')"
 
-      - name: Run optional tests (pytest)
+      - name: Run pytest
         run: |
-          if command -v pytest >/dev/null 2>&1; then pytest -q; else echo 'pytest not installed or no tests'; fi
+          pytest -q

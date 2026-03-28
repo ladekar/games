@@ -14,7 +14,9 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # in-memory store for outstanding questions
 QUESTIONS = {}
-SCORES_FILE = os.path.join(os.path.dirname(__file__), 'data', 'scores.json')
+DEFAULT_SCORES_FILE = os.path.join(os.path.dirname(__file__), 'data', 'scores.json')
+# allow overriding the scores file path via environment for tests/CI
+SCORES_FILE = os.environ.get('SCORES_FILE', DEFAULT_SCORES_FILE)
 SCORES_LOCK = threading.Lock()
 
 
