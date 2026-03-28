@@ -1,6 +1,9 @@
 # Brain Tease & Mindset — Games folder
 
 This folder contains a terminal brain-teaser game.
+# Brain Tease & Mindset — Games folder
+
+This folder contains a terminal brain-teaser game.
 
 Run
 
@@ -44,4 +47,12 @@ docker build -f Dockerfile.prod -t pandai-webapp:prod .
 docker run -p 8000:8000 pandai-webapp:prod
 
 # the app will be available at http://127.0.0.1:8000
+```
+
+CLI Auto-submit
+```bash
+# run CLI and auto-submit final score when it beats current best
+python3 games/brain_tease.py --auto-submit --submit-host 127.0.0.1 --submit-port 5000 --submit-source brain-tease
+
+# interactive mode will prompt for a display name (or set $USER in env)
 ```
