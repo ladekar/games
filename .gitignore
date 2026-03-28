@@ -1,0 +1,6 @@
+# Ignore local machine files and embedded repos
+.DS_Store
+findjobs
+findjobs.zip
+cheat
+panda-ai
