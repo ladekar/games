@@ -33,3 +33,15 @@ cd games/webapp
 docker build -t pandai-webapp .
 docker run -p 5000:5000 pandai-webapp
 ```
+
+Production (Gunicorn)
+```bash
+# build the production image (uses Dockerfile.prod)
+cd games/webapp
+docker build -f Dockerfile.prod -t pandai-webapp:prod .
+
+# run on port 8000
+docker run -p 8000:8000 pandai-webapp:prod
+
+# the app will be available at http://127.0.0.1:8000
+```
